@@ -37,12 +37,15 @@ namespace Hyper_V_Manager
         string vmBalloonState = string.Empty;
         System.Timers.Timer t = new System.Timers.Timer();
         Dictionary<string, string> changingVMs = new Dictionary<string, string>();
-
+	    private VMManager vmManager;
         
         private void Form1_Load(object sender, EventArgs e)
         {
             t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
             t.Interval = 4500;
+			vmManager = new VMManager();
+			vmManager.UpdateList();
+
             BuildContextMenu();
         }
 
