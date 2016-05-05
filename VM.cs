@@ -6,17 +6,34 @@ using System.Text;
 
 namespace Hyper_V_Manager
 {
+
+		public enum RequestedState {Start = 2,Stop = 3, Pause = 32768, SaveState = 32769 };
+
 	class VM
 	{
 		public String Name { get { return _managementObject["ElementName"].ToString(); }  }
 		public String Status {get { return ConvertState(Convert.ToInt32(_managementObject["State"])); }}
-		private ManagementObject _managementObject;
+		public ManagementObject _managementObject;
 
 		public VM(ManagementObject managementObject)
 		{
 			_managementObject = managementObject;
 		}
 
+
+
+		public void ChangeState(RequestedState requestedState)
+		{
+			ManagementBaseObject inParams = _managementObject.GetMethodParameters("RequestStateChange");
+
+			inParams["RequestedState"] = requestedState;
+
+			_managementObject.InvokeMethod("RequestStateChange",
+				inParams,
+				null);
+		}
+
+		
 
 		private string ConvertState(int statuscode)
 		{
