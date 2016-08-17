@@ -25,8 +25,9 @@ namespace Hyper_V_Manager
 			var vmSearcher = new ManagementObjectSearcher(manScope, queryObj);
 			var vmCollection = vmSearcher.Get();
 
-			foreach (ManagementObject vm in vmCollection)
+			foreach (var o in vmCollection)
 			{
+				var vm = (ManagementObject) o;
 				vms.Add(new VM(vm));
 			}
 
