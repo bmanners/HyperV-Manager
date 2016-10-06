@@ -211,6 +211,7 @@ namespace Hyper_V_Manager
 		private void BuildContextMenu()
 		{
 			//Re-get the VM's from Hyper-V
+			vmManager.UpdateList();
 			var localVMs = vmManager.GetManagementObjects();  // GetVMs();
 
 			var vmState = string.Empty;

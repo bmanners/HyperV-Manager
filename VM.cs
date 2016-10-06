@@ -1,30 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Text;
 
 namespace Hyper_V_Manager
 {
-
-		public enum RequestedState {Start = 2,Stop = 3, Pause = 32768, SaveState = 32769 };
-
-	class VM
+	public enum RequestedState
 	{
-		public String Name { get { return _managementObject["ElementName"].ToString(); }  }
-		public String Status {get { return ConvertState(Convert.ToInt32(_managementObject["State"])); }}
+		Start = 2,
+		Stop = 3,
+		Pause = 32768,
+		SaveState = 32769
+	}
+
+	internal class VM
+	{
 		public ManagementObject _managementObject;
 
 		public VM(ManagementObject managementObject)
 		{
 			_managementObject = managementObject;
+			
 		}
 
+		public string Name
+		{
+			get { return _managementObject["ElementName"].ToString(); }
+		}
+
+		public string Status
+		{
+			get
+			{
+				var test = _managementObject["State"].ToString();
+				return ConvertState(Convert.ToInt32(_managementObject["State"]));
+			}
+		}
 
 
 		public void ChangeState(RequestedState requestedState)
 		{
-			ManagementBaseObject inParams = _managementObject.GetMethodParameters("RequestStateChange");
+			var inParams = _managementObject.GetMethodParameters("RequestStateChange");
 
 			inParams["RequestedState"] = requestedState;
 
@@ -33,7 +47,6 @@ namespace Hyper_V_Manager
 				null);
 		}
 
-		
 
 		private string ConvertState(int statuscode)
 		{
@@ -66,7 +79,6 @@ namespace Hyper_V_Manager
 					break;
 			}
 			return state;
-
 		}
 	}
 }
